@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jalonso98.users.entities.User;
 import com.jalonso98.users.services.DBUserService;
 
+import io.micrometer.core.annotation.Timed;
+
 @RestController
 @RequestMapping("/db-users")
 public class DBUserController {
@@ -25,6 +27,7 @@ public class DBUserController {
 	private DBUserService userService;
 
 	@GetMapping()
+	@Timed(value = "get.users", description = "Time taken to return Gets")
 	public ResponseEntity<Page<User>> getUsers(
 			@RequestParam(required = false, value = "page", defaultValue = "0") int page,
 			@RequestParam(required = false, value = "size", defaultValue = "10") int size) {
