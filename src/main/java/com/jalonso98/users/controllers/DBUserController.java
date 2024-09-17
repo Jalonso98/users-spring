@@ -18,9 +18,16 @@ import com.jalonso98.users.entities.User;
 import com.jalonso98.users.services.DBUserService;
 
 import io.micrometer.core.annotation.Timed;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/db-users")
+@Tag(name = "DBUser", description = "Operations related to users stored in DB")
 public class DBUserController {
 
 	@Autowired
@@ -28,6 +35,10 @@ public class DBUserController {
 
 	@GetMapping()
 	@Timed(value = "get.users", description = "Time taken to return Gets")
+	@Operation(summary = "Get a list of users", description = "This endpoint returns a list of users", responses = {
+			@ApiResponse(responseCode = "200", description = "List of users", content = @Content(mediaType = "application/json",
+					// schema = @Schema(implementation = User.class)
+					examples = { @ExampleObject(name = "List of users") })) })
 	public ResponseEntity<Page<User>> getUsers(
 			@RequestParam(required = false, value = "page", defaultValue = "0") int page,
 			@RequestParam(required = false, value = "size", defaultValue = "10") int size) {
@@ -42,6 +53,10 @@ public class DBUserController {
 	}
 
 	@GetMapping("/username/{username}")
+	@Operation(summary = "Get a user from DB", description = "This endpoint returns a db-user", responses = {
+			@ApiResponse(responseCode = "200", description = "DB-user", content = @Content(mediaType = "application/json",
+					schema = @Schema(implementation = User.class),
+					examples = { @ExampleObject(name = "DBUser", value = "{\"id\": 1, \"username\": \"mana.kautzer\", \"password\": \"5847f06fe11cc315c12c7078f7740e55\", \"profile\": null}") })) })
 	public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
 		return new ResponseEntity<User>(userService.getUserByUsername(username), HttpStatus.OK);
 	}
