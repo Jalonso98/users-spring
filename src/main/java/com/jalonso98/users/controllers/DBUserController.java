@@ -1,6 +1,10 @@
 package com.jalonso98.users.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +33,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/db-users")
 @Tag(name = "DBUser", description = "Operations related to users stored in DB")
 public class DBUserController {
+	
+	private static final Logger log = LoggerFactory.getLogger(DBUserController.class);
 
 	@Autowired
 	private DBUserService userService;
@@ -57,6 +63,7 @@ public class DBUserController {
 			@ApiResponse(responseCode = "200", description = "DB-user", content = @Content(mediaType = "application/json",
 					schema = @Schema(implementation = User.class),
 					examples = { @ExampleObject(name = "DBUser", value = "{\"id\": 1, \"username\": \"mana.kautzer\", \"password\": \"5847f06fe11cc315c12c7078f7740e55\", \"profile\": null}") })) })
+	@Cacheable("users")
 	public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
 		return new ResponseEntity<User>(userService.getUserByUsername(username), HttpStatus.OK);
 	}
@@ -68,7 +75,9 @@ public class DBUserController {
 	}
 
 	@GetMapping("/{id}")
+	@Cacheable("users")
 	public ResponseEntity<User> getUserById(@PathVariable final Integer id) {
+		log.info("Getting ser by id {}", id);
 		return new ResponseEntity<User>(userService.getUserById(id), HttpStatus.OK);
 	}
 
@@ -83,6 +92,7 @@ public class DBUserController {
 	}
 
 	@DeleteMapping("/{id}")
+	@CacheEvict("users")
 	public ResponseEntity<Void> deleteUser(@PathVariable final Integer id) {
 		userService.deleteUser(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
