@@ -1,5 +1,6 @@
 package com.jalonso98.users.entities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -13,7 +14,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "_user")
-public class User {
+public class User implements Serializable {
+
+	private static final long serialVersionUID = 5087140774274752199L;
 
 	@Override
 	public int hashCode() {

@@ -1,6 +1,10 @@
 package com.jalonso98.users.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -20,6 +24,8 @@ public class DBUserService {
 	@Autowired
 	private Faker faker;
 	
+	private static final Logger log = LoggerFactory.getLogger(DBUserService.class);
+
 	@Resource
 	private UserRepository userRepository;
 
@@ -33,10 +39,13 @@ public class DBUserService {
 		}
 	}
 	
+	@Cacheable("users")
 	public User getUserById(Integer id) {
+		log.info("Getting ser by id {}", id);
 		return userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 	}
 	
+	@Cacheable("users")
 	public Page<User> getUsers(int page, int size){
 		return userRepository.findAll(PageRequest.of(page, size));
 	}
@@ -64,6 +73,7 @@ public class DBUserService {
 		return userRepository.save(dbUser);
 	}
 	
+	@CacheEvict("users")
 	public void deleteUser(Integer id) {
 		userRepository.delete(userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")));
 	}
