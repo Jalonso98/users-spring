@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.github.javafaker.Faker;
 import com.jalonso98.users.entities.Role;
 import com.jalonso98.users.repositories.RoleRepository;
 
@@ -15,18 +14,15 @@ import jakarta.annotation.PostConstruct;
 
 @Service
 public class RoleService {
-	
-	@Autowired
-	private Faker faker;
 
 	@Autowired
 	private RoleRepository roleRepository;
 	
 	@PostConstruct
 	public void init() {
-		for (int i = 0; i < 10; i++) {
-			roleRepository.save(new Role(faker.business().toString()));
-		}
+		roleRepository.save(new Role("ADMIN"));
+		roleRepository.save(new Role("USER"));
+		roleRepository.save(new Role("GUEST"));
 	}
 
 	public List<Role> getRoles() {

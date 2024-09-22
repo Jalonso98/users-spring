@@ -29,6 +29,8 @@ public class Role {
 		Role other = (Role) obj;
 		return Objects.equals(id, other.id);
 	}
+	
+	public Role() {}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -46,9 +44,9 @@ public class User implements Serializable {
 	@Column(name = "password")
 	private String password;
 
-	@OneToOne
-	@JoinColumn(name = "profile_id", referencedColumnName = "id")
-	private Profile profile;
+//	@OneToOne
+//	@JoinColumn(name = "profile_id", referencedColumnName = "id")
+//	private Profile profile;
 
 	public Integer getId() {
 		return id;
@@ -73,13 +71,13 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
+//
+//	public Profile getProfile() {
+//		return profile;
+//	}
+//
+//	public void setProfile(Profile profile) {
+//		this.profile = profile;
+//	}
 
 }

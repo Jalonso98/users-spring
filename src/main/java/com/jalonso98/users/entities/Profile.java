@@ -1,5 +1,6 @@
 package com.jalonso98.users.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,11 +9,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "profile")
-public class Profile {
+public class Profile implements Serializable {
+
+	private static final long serialVersionUID = -6933841119374084826L;
 
 	@Override
 	public int hashCode() {
@@ -45,6 +50,10 @@ public class Profile {
 	@Column(name = "birth_date")
 	private Date birthDate;
 
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
+
 	public Integer getId() {
 		return id;
 	}
@@ -75,6 +84,14 @@ public class Profile {
 
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }
