@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jalonso98.users.entities.Role;
 import com.jalonso98.users.entities.UserInRole;
 import com.jalonso98.users.services.UserInRoleServices;
 
@@ -29,8 +30,8 @@ public class UserInRoleController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<List<UserInRole>> getRolesByUserId(@PathVariable("userId") Integer userId){
-		return new ResponseEntity<List<UserInRole>>(userInRoleServices.getRolesByUserId(userId), HttpStatus.OK);
+	public ResponseEntity<List<Role>> getRolesByUserId(@PathVariable("userId") Integer userId){
+		return new ResponseEntity<List<Role>>(userInRoleServices.getRolesByUserId(userId), HttpStatus.OK);
 	}
 
 }

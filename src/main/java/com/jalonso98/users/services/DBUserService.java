@@ -8,11 +8,16 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.github.javafaker.Faker;
+import com.jalonso98.users.entities.Role;
 import com.jalonso98.users.entities.User;
+import com.jalonso98.users.entities.UserInRole;
+import com.jalonso98.users.repositories.RoleRepository;
+import com.jalonso98.users.repositories.UserInRoleRepository;
 import com.jalonso98.users.repositories.UserRepository;
 
 import jakarta.annotation.PostConstruct;
@@ -28,13 +33,33 @@ public class DBUserService {
 
 	@Resource
 	private UserRepository userRepository;
-
+	
+	@Resource
+	private UserInRoleRepository userInRoleRepository;
+	
+	@Resource 
+	private RoleRepository roleRepository;
+	
 	@PostConstruct
 	public void init() {
-		for (int i = 0; i < 1000; i++) {
+		
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		User firstUser = new User();
+		firstUser.setUsername("admin");
+		firstUser.setPassword(encoder.encode("admin"));
+		userRepository.save(firstUser);
+		
+		UserInRole userInRole = new UserInRole();
+		userInRole.setUser(firstUser);
+		roleRepository.save(new Role("ROLE_ADMIN"));
+		userInRole.setRole(roleRepository.findById(1).get());
+		userInRoleRepository.save(userInRole);
+		
+		for (int i = 0; i < 999; i++) {
 			User user = new User();
 			user.setUsername(faker.name().username());
-			user.setPassword(faker.crypto().md5());
+			user.setPassword(encoder.encode(("user"+(i+2))));
 			userRepository.save(user);
 		}
 	}
@@ -59,17 +84,21 @@ public class DBUserService {
 	}
 	
 	public User getUserByUsernameAndPassword(String username, String password) {
-		return userRepository.findByUsernameAndPassword(username, password).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		return userRepository.findByUsernameAndPassword(username, encoder.encode(password)).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 	}
 	
 	public User createUser(User user) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		user.setPassword(encoder.encode(user.getPassword()));
 		return userRepository.save(user);
 	}
 	
 	public User updateUser(User user, Integer id) {
 		User dbUser = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 		dbUser.setUsername(user.getUsername());
-		dbUser.setPassword(user.getPassword());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		dbUser.setPassword(encoder.encode(user.getPassword()));
 		return userRepository.save(dbUser);
 	}
 	
@@ -77,5 +106,5 @@ public class DBUserService {
 	public void deleteUser(Integer id) {
 		userRepository.delete(userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")));
 	}
-
+	
 }

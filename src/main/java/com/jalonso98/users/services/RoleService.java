@@ -20,9 +20,8 @@ public class RoleService {
 	
 	@PostConstruct
 	public void init() {
-		roleRepository.save(new Role("ADMIN"));
-		roleRepository.save(new Role("USER"));
-		roleRepository.save(new Role("GUEST"));
+		roleRepository.save(new Role("ROLE_USER"));
+		roleRepository.save(new Role("ROLE_GUEST"));
 	}
 
 	public List<Role> getRoles() {

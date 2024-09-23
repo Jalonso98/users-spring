@@ -42,7 +42,7 @@ public class UserInRoleServices {
 		}
 	}
 	
-	public List<UserInRole> getRolesByUserId(Integer userId){
+	public List<Role> getRolesByUserId(Integer userId){
 		return userInRoleRepository.findByUserId(userId);
 	}
 	
