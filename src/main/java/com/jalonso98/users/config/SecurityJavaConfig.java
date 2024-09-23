@@ -10,47 +10,51 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.jalonso98.users.security.JwtRequestFilter;
 import com.jalonso98.users.services.CustomUserDetailsService;
 
 @Configuration
 public class SecurityJavaConfig {
-	
+
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();  // Usa BCrypt para la encriptación de contraseñas
+		return new BCryptPasswordEncoder(); // Usa BCrypt para la encriptación de contraseñas
 	}
-	
-	@SuppressWarnings("removal")
-	@Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            // Autorización de requests
-            .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/**")
-                .hasRole("ADMIN")
-            )
-        	.httpBasic();
 
-        return http.build();
-    }
-	
 	@Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());  // Establecer el encoder para validar contraseñas
-        return authProvider;
-    }
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		http.
+		authorizeHttpRequests(authorize -> authorize
+				.requestMatchers("/api/auth/**").permitAll()
+				.requestMatchers("/**").hasRole("ADMIN")
+		)
+		.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+		.csrf(csrf -> csrf.disable());
+		;
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .authenticationProvider(authenticationProvider())
-                .build();
-    }
+		return http.build();
+	}
+
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setUserDetailsService(userDetailsService);
+		authProvider.setPasswordEncoder(passwordEncoder()); // Establecer el encoder para validar contraseñas
+		return authProvider;
+	}
+
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+		return http.getSharedObject(AuthenticationManagerBuilder.class).authenticationProvider(authenticationProvider())
+				.build();
+	}
 
 }
