@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jalonso98.users.dto.LoginRequest;
-import com.jalonso98.users.entities.JwtResponse;
+import com.jalonso98.users.models.JwtResponse;
 
 @RestController
 @RequestMapping("/api/auth")

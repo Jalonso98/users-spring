@@ -1,4 +1,4 @@
-package com.jalonso98.users.entities;
+package com.jalonso98.users.models;
 
 public class JwtResponse {
     private String token;

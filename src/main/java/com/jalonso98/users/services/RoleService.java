@@ -4,10 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jalonso98.users.entities.Role;
+import com.jalonso98.users.models.AuditDetails;
 import com.jalonso98.users.repositories.RoleRepository;
 
 import jakarta.annotation.PostConstruct;
@@ -17,6 +22,11 @@ public class RoleService {
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private KafkaTemplate<Integer, String> kafkaTemplate;
+	
+	private ObjectMapper objectMapper = new ObjectMapper();
 	
 	@PostConstruct
 	public void init() {
@@ -34,7 +44,14 @@ public class RoleService {
 	}
 
 	public Role createRole(Role role) {
-		return roleRepository.save(role);
+		Role roleCreated = roleRepository.save(role);
+		AuditDetails auditDetails = new AuditDetails(SecurityContextHolder.getContext().getAuthentication().getName(), roleCreated.getName());
+		try {
+			kafkaTemplate.send("users-app",objectMapper.writeValueAsString(auditDetails));
+		} catch (JsonProcessingException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ("Error parsing the message: " + e.getMessage()));
+		}
+		return roleCreated;
 	}
 
 	public Role updateRole(Integer id, Role role) {
