@@ -1,0 +1,719 @@
+{
+	"info": {
+		"_postman_id": "f5070055-aae7-4e10-9272-7a366e1582e8",
+		"name": "Spring Course",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14020428"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response = pm.response.json();\r",
+									"pm.collectionVariables.set(\"JwtToken\", response.token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/api/auth/login",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users API",
+			"item": [
+				{
+					"name": "Hello World",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/hello",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"hello"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "startsWith",
+									"value": "r",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/jalonso98",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"jalonso98"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\": \"Alonso\",\r\n    \"username\": \"jalonso98\",\r\n    \"password\": \"Trunks\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/users",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nickname\": \"Alonso\",\r\n    \"username\": \"jalonso98\",\r\n    \"password\": \"Broly\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/jalonso98",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"jalonso98"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/jalonso98",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"jalonso98"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles API",
+			"item": [
+				{
+					"name": "Get roles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/roles",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get role by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/roles/3",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"roles",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TEST\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/roles",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"VIEWER\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/roles/3",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"roles",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/roles/3",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"roles",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DB Users API",
+			"item": [
+				{
+					"name": "Get users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/db-users",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"db-users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "8",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get usernames",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/db-users/usernames",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"db-users",
+								"usernames"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "8",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/db-users/username/admin",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"db-users",
+								"username",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by username and pass",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"william.ondricka\",\r\n    \"password\": \"ce69aa3f6336d6e591b87e7360a6666a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/db-users/auth",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"db-users",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/db-users/1",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"db-users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/db-users/1",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"db-users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actuator",
+			"item": [
+				{
+					"name": "Actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/actuator",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/actuator/metrics",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"actuator",
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Metrics get.users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/actuator/metrics/get.users",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"actuator",
+								"metrics",
+								"get.users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Prometheus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/actuator/prometheus",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"actuator",
+								"prometheus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles API",
+			"item": [
+				{
+					"name": "Create Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"{{$randomFirstName}}\",\r\n    \"lastName\": \"{{$randomLastName}}\",\r\n    \"birthDate\": \"{{$isoTimestamp}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/1/profiles",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"profiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/1/profiles/1",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"profiles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Addresses API",
+			"item": [
+				{
+					"name": "Get Addresses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/1/profiles/1/addresses",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"profiles",
+								"1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Address",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"street\": \"{{$randomStreetName}}\",\r\n    \"number\": \"{{$randomInt}}\",\r\n    \"city\": \"{{$randomCity}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/1/profiles/1/addresses",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"profiles",
+								"1",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserInRole API",
+			"item": [
+				{
+					"name": "Assign Role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/1/roles/1",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles By User ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}{{host}}/users/1/roles",
+							"host": [
+								"{{protocol}}{{host}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{JwtToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JwtToken",
+			"value": ""
+		}
+	]
+}
